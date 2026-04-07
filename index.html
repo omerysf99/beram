@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Matematik Yarışması</title>
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #111;
+    color: white;
+}
+
+.box {
+    margin-top: 50px;
+    animation: fadeIn 0.5s;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background-color: gold;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);} 
+    to {opacity: 1; transform: translateY(0);} 
+}
+</style>
+</head>
+<body>
+
+<div class="box" id="kutu">
+    <h1>💰 Matematik Yarışması</h1>
+    <h2 id="para">Para: 0 ₺</h2>
+    <h3 id="soru"></h3>
+    <div id="cevaplar"></div>
+    <div id="kontrol"></div>
+</div>
+
+<script>
+let sorular = [
+    {soru:"5 + 3 kaçtır?", cevaplar:[6,7,8,9], dogru:8},
+    {soru:"10 - 4 kaçtır?", cevaplar:[5,6,7,8], dogru:6},
+    {soru:"6 x 2 kaçtır?", cevaplar:[10,11,12,13], dogru:12},
+    {soru:"15 ÷ 3 kaçtır?", cevaplar:[3,4,5,6], dogru:5},
+    {soru:"9 + 6 kaçtır?", cevaplar:[14,15,16,17], dogru:15},
+    {soru:"7 x 3 kaçtır?", cevaplar:[20,21,22,23], dogru:21},
+    {soru:"20 - 8 kaçtır?", cevaplar:[10,11,12,13], dogru:12},
+    {soru:"16 ÷ 4 kaçtır?", cevaplar:[2,3,4,5], dogru:4},
+    {soru:"8 x 5 kaçtır?", cevaplar:[35,40,45,50], dogru:40},
+    {soru:"Bir tren saatte 120 km hızla gidiyor. 2.5 saatte kaç km gider?", cevaplar:[250,280,300,320], dogru:300}
+];
+
+let index = 0;
+let para = 0;
+
+function animasyonYenile(){
+    const kutu = document.getElementById("kutu");
+    kutu.style.animation = "none";
+    kutu.offsetHeight; 
+    kutu.style.animation = "fadeIn 0.5s";
+}
+
+function soruGoster(){
+    animasyonYenile();
+
+    document.getElementById("kontrol").innerHTML = "";
+
+    let s = sorular[index];
+    document.getElementById("soru").innerText = (index+1) + ". Soru: " + s.soru;
+
+    let cevapDiv = document.getElementById("cevaplar");
+    cevapDiv.innerHTML = "";
+
+    s.cevaplar.forEach(c => {
+        let btn = document.createElement("button");
+        btn.innerText = c;
+        btn.onclick = () => cevapKontrol(c);
+        cevapDiv.appendChild(btn);
+    });
+}
+
+function cevapKontrol(secim){
+    let s = sorular[index];
+
+    // Tek cevap hakkı
+    let buttons = document.querySelectorAll("#cevaplar button");
+    buttons.forEach(btn => btn.disabled = true);
+
+    if(secim === s.dogru){
+        para += 1000;
+        document.getElementById("para").innerText = "Para: " + para + " ₺";
+
+        if(index === sorular.length - 1){
+            alert("🎉 Tebrikler! Oyunu kazandın: " + para + " ₺");
+            return;
+        }
+
+        sonrakiSecim();
+
+    } else {
+        alert("❌ Yanlış! Tüm para gitti!");
+        para = 0;
+        index = 0;
+        document.getElementById("para").innerText = "Para: 0 ₺";
+        soruGoster();
+    }
+}
+
+function sonrakiSecim(){
+    let kontrol = document.getElementById("kontrol");
+    kontrol.innerHTML = "<p>Devam etmek ister misin?</p>";
+
+    let devamBtn = document.createElement("button");
+    devamBtn.innerText = "Devam Et";
+    devamBtn.onclick = () => {
+        index++;
+        soruGoster();
+    };
+
+    let cekilBtn = document.createElement("button");
+    cekilBtn.innerText = "Çekil";
+    cekilBtn.onclick = () => {
+        alert("💰 Çekildin! Kazancın: " + para + " ₺");
+    };
+
+    kontrol.appendChild(devamBtn);
+    kontrol.appendChild(cekilBtn);
+}
+
+soruGoster();
+</script>
+
+</body>
+</html>
