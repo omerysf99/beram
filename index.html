@@ -46,7 +46,8 @@ button:hover {
 </div>
 
 <script>
-let sorular = [
+// SORU HAVUZLARI
+let kolaySorular = [
     {soru:"5 + 3 kaçtır?", cevaplar:[6,7,8,9], dogru:8},
     {soru:"10 - 4 kaçtır?", cevaplar:[5,6,7,8], dogru:6},
     {soru:"6 x 2 kaçtır?", cevaplar:[10,11,12,13], dogru:12},
@@ -56,11 +57,39 @@ let sorular = [
     {soru:"20 - 8 kaçtır?", cevaplar:[10,11,12,13], dogru:12},
     {soru:"16 ÷ 4 kaçtır?", cevaplar:[2,3,4,5], dogru:4},
     {soru:"8 x 5 kaçtır?", cevaplar:[35,40,45,50], dogru:40},
-    {soru:"Bir tren saatte 120 km hızla gidiyor. 2.5 saatte kaç km gider?", cevaplar:[250,280,300,320], dogru:300}
+    {soru:"12 + 8 kaçtır?", cevaplar:[18,19,20,21], dogru:20},
+    {soru:"14 - 7 kaçtır?", cevaplar:[5,6,7,8], dogru:7},
+    {soru:"3 x 9 kaçtır?", cevaplar:[26,27,28,29], dogru:27}
 ];
 
+let zorSorular = [
+    {soru:"Bir tren saatte 120 km hızla gidiyor. 2.5 saatte kaç km gider?", cevaplar:[250,280,300,320], dogru:300},
+    {soru:"Bir sayının %20'si 40 ise tamamı kaçtır?", cevaplar:[150,180,200,220], dogru:200},
+    {soru:"2^5 + 3^3 kaçtır?", cevaplar:[59,61,63,65], dogru:59}
+];
+
+let sorular = [];
 let index = 0;
 let para = 0;
+
+function rastgeleSec(dizi, adet){
+    let kopya = [...dizi];
+    let secilen = [];
+    for(let i=0;i<adet;i++){
+        let rnd = Math.floor(Math.random()*kopya.length);
+        secilen.push(kopya.splice(rnd,1)[0]);
+    }
+    return secilen;
+}
+
+function oyunuHazirla(){
+    let kolay = rastgeleSec(kolaySorular, 9);
+    let zor = rastgeleSec(zorSorular, 1);
+    sorular = [...kolay, ...zor];
+    index = 0;
+    para = 0;
+    document.getElementById("para").innerText = "Para: 0 ₺";
+}
 
 function animasyonYenile(){
     const kutu = document.getElementById("kutu");
@@ -91,7 +120,6 @@ function soruGoster(){
 function cevapKontrol(secim){
     let s = sorular[index];
 
-    // Tek cevap hakkı
     let buttons = document.querySelectorAll("#cevaplar button");
     buttons.forEach(btn => btn.disabled = true);
 
@@ -108,9 +136,7 @@ function cevapKontrol(secim){
 
     } else {
         alert("❌ Yanlış! Tüm para gitti!");
-        para = 0;
-        index = 0;
-        document.getElementById("para").innerText = "Para: 0 ₺";
+        oyunuHazirla();
         soruGoster();
     }
 }
@@ -129,7 +155,6 @@ function sonrakiSecim(){
     let cekilBtn = document.createElement("button");
     cekilBtn.innerText = "Çekil";
     cekilBtn.onclick = () => {
-        // Çek bono görseli oluştur
         document.getElementById("cevaplar").innerHTML = "";
         document.getElementById("kontrol").innerHTML = "";
         document.getElementById("soru").innerHTML = `
@@ -146,6 +171,8 @@ function sonrakiSecim(){
     kontrol.appendChild(cekilBtn);
 }
 
+// BAŞLAT
+oyunuHazirla();
 soruGoster();
 </script>
 
