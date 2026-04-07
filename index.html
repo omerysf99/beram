@@ -46,10 +46,9 @@ button:hover {
 </div>
 
 <script>
-// (HATA ÖNLEMİ) boş kolay sorular tanımı
+
 let kolaySorular = [];
 
-// ZOR SORU HAVUZU (HEPSİ ZOR)
 let zorSorular = [
     {soru:"2^5 + 3^3 kaçtır?", cevaplar:[59,61,63,65], dogru:59},
     {soru:"Bir sayının %20'si 40 ise tamamı kaçtır?", cevaplar:[150,180,200,220], dogru:200},
@@ -57,14 +56,10 @@ let zorSorular = [
     {soru:"(3^2 + 4^2) kaçtır?", cevaplar:[20,25,30,35], dogru:25},
     {soru:"Bir üçgende iç açılar toplamı kaçtır?", cevaplar:[90,180,270,360], dogru:180},
     {soru:"√144 kaçtır?", cevaplar:[10,11,12,13], dogru:12},
-    {soru:"5! (5 faktöriyel) kaçtır?", cevaplar:[60,100,120,140], dogru:120},
-    {soru:"(x^2 = 49) ise x nedir?", cevaplar:[5,6,7,8], dogru:7},
-    {soru:"Bir tren 90 km/s hızla 4 saatte kaç km gider?", cevaplar:[300,320,360,400], dogru:360},
-    {soru:"log10(1000) kaçtır?", cevaplar:[2,3,4,5], dogru:3},
-    {soru:"(2x = 10) ise x kaçtır?", cevaplar:[3,4,5,6], dogru:5},
-    {soru:"3^4 kaçtır?", cevaplar:[64,72,81,90], dogru:81},
-    {soru:"Bir sayının yarısı 25 ise tamamı kaçtır?", cevaplar:[40,45,50,55], dogru:50},
-    {soru:"√81 + √16 kaçtır?", cevaplar:[10,11,12,13], dogru:13}
+    {soru:"5! kaçtır?", cevaplar:[60,100,120,140], dogru:120},
+    {soru:"x^2 = 49 ise x kaçtır?", cevaplar:[5,6,7,8], dogru:7},
+    {soru:"90 km/s hızla 4 saatte kaç km?", cevaplar:[300,320,360,400], dogru:360},
+    {soru:"log10(1000) kaçtır?", cevaplar:[2,3,4,5], dogru:3}
 ];
 
 let sorular = [];
@@ -74,8 +69,6 @@ let para = 0;
 function rastgeleSec(dizi, adet){
     let kopya = [...dizi];
     let secilen = [];
-
-    // Güvenlik: istenen adet fazla ise sınırla
     adet = Math.min(adet, kopya.length);
 
     for(let i=0;i<adet;i++){
@@ -95,7 +88,7 @@ function oyunuHazirla(){
 function animasyonYenile(){
     const kutu = document.getElementById("kutu");
     kutu.style.animation = "none";
-    kutu.offsetHeight; 
+    kutu.offsetHeight;
     kutu.style.animation = "fadeIn 0.5s";
 }
 
@@ -124,31 +117,20 @@ function cevapKontrol(secim){
     let buttons = document.querySelectorAll("#cevaplar button");
     buttons.forEach(btn => btn.disabled = true);
 
-    // TERS MANTIK: doğru seçilse bile yanlış sayılır 😈
+    // TERS MANTIK
     if(secim !== s.dogru){
-        // yanlış seçersen DOĞRU kabul edilir
         para += 1000;
         document.getElementById("para").innerText = "Para: " + para + " ₺";
 
         if(index === sorular.length - 1){
-            alert("🎉 Tebrikler! Oyunu kazandın: " + para + " ₺");
+            alert("Kazandın: " + para);
             return;
         }
 
         sonrakiSecim();
 
     } else {
-        // doğruyu seçersen kaybedersin
-        alert("❌ Doğruyu seçtin! Ama bu oyunda bu YANLIŞ 😈 Tüm para gitti!");
-        oyunuHazirla();
-        soruGoster();
-    }
-}
-
-        sonrakiSecim();
-
-    } else {
-        alert("❌ Yanlış! Tüm para gitti!");
+        alert("Yanlış sayıldı 😈 Tüm para gitti!");
         oyunuHazirla();
         soruGoster();
     }
@@ -156,37 +138,27 @@ function cevapKontrol(secim){
 
 function sonrakiSecim(){
     let kontrol = document.getElementById("kontrol");
-    kontrol.innerHTML = "<p>Devam etmek ister misin?</p>";
+    kontrol.innerHTML = "<p>Devam?</p>";
 
     let devamBtn = document.createElement("button");
-    devamBtn.innerText = "Devam Et";
-    devamBtn.onclick = () => {
-        index++;
-        soruGoster();
-    };
+    devamBtn.innerText = "Devam";
+    devamBtn.onclick = () => { index++; soruGoster(); };
 
     let cekilBtn = document.createElement("button");
     cekilBtn.innerText = "Çekil";
     cekilBtn.onclick = () => {
         document.getElementById("cevaplar").innerHTML = "";
         document.getElementById("kontrol").innerHTML = "";
-        document.getElementById("soru").innerHTML = `
-            <div style="border:3px solid gold; padding:20px; border-radius:15px; background:#222; display:inline-block; animation: fadeIn 0.5s;">
-                <h2 style="color:gold;">🏆 ÇEK BONO 🏆</h2>
-                <p style="font-size:20px;">Kazandığınız Tutar:</p>
-                <h1 style="color:lime;">${para} ₺</h1>
-                <p>Tebrikler! Oyundan çekildiniz.</p>
-            </div>
-        `;
+        document.getElementById("soru").innerHTML = `<div style='border:3px solid gold;padding:20px;background:#222;display:inline-block'>🏆 ÇEK BONO 🏆<br><h2>${para} ₺</h2></div>`;
     };
 
     kontrol.appendChild(devamBtn);
     kontrol.appendChild(cekilBtn);
 }
 
-// BAŞLAT
 oyunuHazirla();
 soruGoster();
+
 </script>
 
 </body>
