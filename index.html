@@ -129,7 +129,17 @@ function sonrakiSecim(){
     let cekilBtn = document.createElement("button");
     cekilBtn.innerText = "Çekil";
     cekilBtn.onclick = () => {
-        alert("💰 Çekildin! Kazancın: " + para + " ₺");
+        // Çek bono görseli oluştur
+        document.getElementById("cevaplar").innerHTML = "";
+        document.getElementById("kontrol").innerHTML = "";
+        document.getElementById("soru").innerHTML = `
+            <div style="border:3px solid gold; padding:20px; border-radius:15px; background:#222; display:inline-block; animation: fadeIn 0.5s;">
+                <h2 style="color:gold;">🏆 ÇEK BONO 🏆</h2>
+                <p style="font-size:20px;">Kazandığınız Tutar:</p>
+                <h1 style="color:lime;">${para} ₺</h1>
+                <p>Tebrikler! Oyundan çekildiniz.</p>
+            </div>
+        `;
     };
 
     kontrol.appendChild(devamBtn);
