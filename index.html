@@ -47,7 +47,17 @@ button:hover {
 
 <script>
 
-let kolaySorular = [];
+let kolaySorular = [
+    {soru:"5 + 3 kaçtır?", cevaplar:[6,7,8,9], dogru:8},
+    {soru:"10 - 4 kaçtır?", cevaplar:[5,6,7,8], dogru:6},
+    {soru:"6 x 2 kaçtır?", cevaplar:[10,11,12,14], dogru:12},
+    {soru:"9 / 3 kaçtır?", cevaplar:[2,3,4,5], dogru:3},
+    {soru:"7 + 2 kaçtır?", cevaplar:[8,9,10,11], dogru:9},
+    {soru:"8 - 3 kaçtır?", cevaplar:[4,5,6,7], dogru:5},
+    {soru:"4 x 2 kaçtır?", cevaplar:[6,7,8,9], dogru:8},
+    {soru:"12 / 4 kaçtır?", cevaplar:[2,3,4,5], dogru:3},
+    {soru:"15 - 5 kaçtır?", cevaplar:[8,9,10,11], dogru:10}
+];
 
 let zorSorular = [
     {soru:"2^5 + 3^3 kaçtır?", cevaplar:[59,61,63,65], dogru:59},
@@ -79,9 +89,14 @@ function rastgeleSec(dizi, adet){
 }
 
 function oyunuHazirla(){
-    sorular = rastgeleSec(zorSorular, 10);
+    let kolay9 = rastgeleSec(kolaySorular, 9);
+    let zor1 = rastgeleSec(zorSorular, 1);
+
+    sorular = kolay9.concat(zor1);
+
     index = 0;
     para = 0;
+
     document.getElementById("para").innerText = "Para: 0 ₺";
 }
 
@@ -117,7 +132,7 @@ function cevapKontrol(secim){
     let buttons = document.querySelectorAll("#cevaplar button");
     buttons.forEach(btn => btn.disabled = true);
 
-    // TERS MANTIK
+    // TERS MANTIK DEVAM
     if(secim !== s.dogru){
         para += 1000;
         document.getElementById("para").innerText = "Para: " + para + " ₺";
